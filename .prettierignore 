@@ -1,0 +1,14 @@
+node_modules
+.next
+.env*.local
+*.log
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+dist
+build
+coverage
+.nyc_output
+*.min.js
+*.min.css
+public
