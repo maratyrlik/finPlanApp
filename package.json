@@ -2,13 +2,15 @@
 	"name": "react-test-app",
 	"version": "0.1.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build --turbopack",
 		"start": "next start",
 		"lint": "eslint",
 		"format": "prettier --write .",
-		"format:check": "prettier --check ."
+		"format:check": "prettier --check .",
+		"run": "node run.js"
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^2.57.0",
