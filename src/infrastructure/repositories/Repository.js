@@ -1,0 +1,129 @@
+// src/infrastructure/repositories/Repository.js
+import { supabaseAdmin } from '../../../src/lib/supabase.js'
+
+export class Repository {
+	constructor(tableName, entityClass) {
+		this.tableName = tableName
+		this.entityClass = entityClass
+	}
+
+	// Abstract method - must be implemented by child classes
+	toDatabase(entity) {
+		throw new Error('toDatabase method must be implemented by child class')
+	}
+
+	// Generic save method
+	async save(entity) {
+		try {
+			const entityData = this.toDatabase(entity)
+
+			const { data, error } = await supabaseAdmin
+				.from(this.tableName)
+				.insert(entityData)
+				.select()
+				.single()
+
+			if (error) throw error
+
+			return this.entityClass.fromDatabase(data)
+		} catch (error) {
+			throw new Error(
+				`Failed to save ${this.tableName}: ${error.message}`
+			)
+		}
+	}
+
+	// Generic update method
+	async update(entity) {
+		try {
+			if (!entity.id) {
+				throw new Error(`Cannot update ${this.tableName} without ID`)
+			}
+
+			const entityData = this.toDatabase(entity)
+
+			const { data, error } = await supabaseAdmin
+				.from(this.tableName)
+				.update(entityData)
+				.eq('id', entity.id)
+				.select()
+				.single()
+
+			if (error) throw error
+
+			return this.entityClass.fromDatabase(data)
+		} catch (error) {
+			throw new Error(
+				`Failed to update ${this.tableName}: ${error.message}`
+			)
+		}
+	}
+
+	// Generic find by ID
+	async findById(id) {
+		try {
+			const { data, error } = await supabaseAdmin
+				.from(this.tableName)
+				.select('*')
+				.eq('id', id)
+				.single()
+
+			if (error) {
+				if (error.code === 'PGRST116') {
+					return null // Not found
+				}
+				throw error
+			}
+
+			return this.entityClass.fromDatabase(data)
+		} catch (error) {
+			throw new Error(
+				`Failed to find ${this.tableName}: ${error.message}`
+			)
+		}
+	}
+
+	// Generic find all
+	async findAll() {
+		try {
+			const { data, error } = await supabaseAdmin
+				.from(this.tableName)
+				.select('*')
+				.order('created_at', { ascending: false })
+
+			if (error) throw error
+
+			return data.map(row => this.entityClass.fromDatabase(row))
+		} catch (error) {
+			throw new Error(
+				`Failed to find all ${this.tableName}: ${error.message}`
+			)
+		}
+	}
+
+	// Generic delete
+	async delete(id) {
+		try {
+			const { error } = await supabaseAdmin
+				.from(this.tableName)
+				.delete()
+				.eq('id', id)
+
+			if (error) throw error
+
+			return true
+		} catch (error) {
+			throw new Error(
+				`Failed to delete ${this.tableName}: ${error.message}`
+			)
+		}
+	}
+
+	async upsert(entity) {
+		if (entity.id) {
+			return await this.update(entity)
+		} else {
+			return await this.save(entity)
+		}
+	}
+}
