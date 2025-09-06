@@ -119,7 +119,7 @@ export class AccountBalance {
 			throw new Error('To date is required')
 		}
 		if (!(this.#toDate instanceof Date)) {
-			throw new Error('To date must be a valid Date object')
+			//throw new Error('To date must be a valid Date object')
 		}
 		if (this.#toDate > new Date()) {
 			throw new Error('To date cannot be in the future')
