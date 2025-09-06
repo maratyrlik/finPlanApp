@@ -1,7 +1,7 @@
 'use client'
 
-import Button from '../components/Button'
-import log from '../lib/log'
+import Button from '../shared/components/Button'
+import log from '../shared/lib/log'
 
 export default function Home() {
 	const handleClick = async () => {

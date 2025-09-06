@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '../../../lib/supabase'
+import { supabaseAdmin } from '../../../shared/lib/supabase'
 
-import { AccountBalanceRepository } from '../../../infrastructure/repositories/AccountBalanceRepository.js'
-import { AccountBalance } from '../../../domain/entities/AccountBalance.js'
+import { AccountBalanceRepository } from '../../../features/accounts/infrastructure/repositories/AccountBalanceRepository.js'
+import { AccountBalance } from '../../../features/accounts/domain/entities/AccountBalance.js'
 
 export async function POST(request) {
 	try {
