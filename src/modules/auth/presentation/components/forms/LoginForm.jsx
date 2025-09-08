@@ -108,7 +108,7 @@ export function LoginForm({ onSubmit, loading = false }) {
 				</a>
 				<p className="auth-form__text">
 					Don't have an account?{' '}
-					<a href="/auth/register" className="auth-form__link">
+					<a href="/register" className="auth-form__link">
 						Sign up
 					</a>
 				</p>

@@ -1,4 +1,3 @@
-// src/infrastructure/repositories/Repository.js
 import { supabaseAdmin } from '../../../../shared/lib/supabase.js'
 
 export class Repository {

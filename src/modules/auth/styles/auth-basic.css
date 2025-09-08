@@ -267,3 +267,97 @@
 .auth-mb-4 {
 	margin-bottom: var(--auth-spacing-4);
 }
+
+/* Two-column layout for name fields */
+.auth-form__row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--auth-spacing-4);
+}
+
+@media (max-width: 640px) {
+	.auth-form__row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Terms and conditions text */
+.auth-form__terms {
+	margin-top: var(--auth-spacing-2);
+}
+
+.auth-form__text-small {
+	font-size: 0.75rem;
+	color: var(--auth-text-muted);
+	margin: 0;
+	line-height: 1.4;
+}
+
+/* Password strength indicator */
+.password-strength {
+	margin-top: var(--auth-spacing-2);
+	display: flex;
+	align-items: center;
+	gap: var(--auth-spacing-3);
+}
+
+.password-strength__bar {
+	flex: 1;
+	display: flex;
+	gap: 2px;
+	height: 4px;
+}
+
+.password-strength__segment {
+	flex: 1;
+	background-color: #e5e7eb;
+	border-radius: 2px;
+	transition: background-color 0.2s ease;
+}
+
+.password-strength__segment--active {
+	background-color: #10b981;
+}
+
+.password-strength__label {
+	font-size: 0.75rem;
+	font-weight: 500;
+	min-width: 48px;
+	text-align: right;
+}
+
+/* Enhanced input wrapper */
+.auth-input-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Form validation improvements */
+.auth-input--success .auth-input__field {
+	border-color: var(--auth-success);
+}
+
+.auth-input--success .auth-input__field:focus {
+	box-shadow: 0 0 0 3px rgb(16 185 129 / 0.1);
+}
+
+/* Loading overlay for forms */
+.auth-form--loading {
+	position: relative;
+	pointer-events: none;
+	opacity: 0.7;
+}
+
+.auth-form--loading::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--auth-radius-lg);
+}
