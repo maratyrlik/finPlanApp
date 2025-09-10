@@ -8,10 +8,8 @@ export class RegisterHandler {
 
 	async handle(registerCommand) {
 		try {
-			// Validate the command
 			registerCommand.validate()
 
-			// Check if email already exists
 			const existingUser = await this.userRepository.findByEmail(
 				registerCommand.email
 			)
@@ -19,23 +17,19 @@ export class RegisterHandler {
 				throw new Error('An account with this email already exists')
 			}
 
-			// Validate password strength
 			const passwordErrors = PasswordService.validateStrength(
 				registerCommand.password
 			)
 			if (passwordErrors.length > 0) {
-				throw new Error(passwordErrors[0]) // Return first error
+				throw new Error(passwordErrors[0])
 			}
 
-			// Create user entity
 			const user = registerCommand.createUser()
 
-			// Hash password (store separately from user entity)
 			const hashedPassword = await PasswordService.hash(
 				registerCommand.password
 			)
 
-			// Save user to database
 			const savedUser = await this.userRepository.save(user)
 
 			// TODO: Store password hash separately (when you add auth tables)

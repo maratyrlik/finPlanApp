@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { AuthInput } from '../ui/AuthInput.jsx'
 import { AuthButton } from '../ui/AuthButton.jsx'
 
+import { PasswordService } from '../../../domain/services/PasswordService.js'
+import { EmailService } from '../../../domain/services/EmailService.js'
+
 export function RegisterForm({ onSubmit, loading = false }) {
 	const [formData, setFormData] = useState({
 		firstName: 'm',
@@ -72,26 +75,16 @@ export function RegisterForm({ onSubmit, loading = false }) {
 		// Email validation
 		if (!formData.email) {
 			newErrors.email = 'Email is required'
-		} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+		} else if (!EmailService.isValid(formData.email)) {
 			newErrors.email = 'Please enter a valid email address'
 		}
 
 		// Password validation
-		if (!formData.password) {
-			newErrors.password = 'Password is required'
-		} else {
-			if (formData.password.length < 8) {
-				newErrors.password =
-					'Password must be at least 8 characters long'
-			} else if (!/(?=.*[a-z])/.test(formData.password)) {
-				newErrors.password =
-					'Password must contain at least one lowercase letter'
-			} else if (!/(?=.*[A-Z])/.test(formData.password)) {
-				newErrors.password =
-					'Password must contain at least one uppercase letter'
-			} else if (!/(?=.*\d)/.test(formData.password)) {
-				newErrors.password = 'Password must contain at least one number'
-			}
+		const passwordErrors = PasswordService.validateStrength(
+			formData.password
+		)
+		if (passwordErrors) {
+			newErrors.password = passwordErrors[0]
 		}
 
 		// Confirm password validation
