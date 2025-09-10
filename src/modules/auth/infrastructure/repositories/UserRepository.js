@@ -3,7 +3,7 @@ import { User } from '../../domain/entities/User.js'
 
 export class UserRepository extends Repository {
 	constructor() {
-		super('users', User)
+		super('User', User)
 	}
 
 	// Convert User entity to database format
@@ -13,14 +13,14 @@ export class UserRepository extends Repository {
 			first_name: user.firstName,
 			last_name: user.lastName,
 			email_verified: user.emailVerified,
-			// Don't include password - that should be handled by auth system
+			password_hash: 'test', // Don't include password - that should be handled by auth system
 		}
 	}
 
 	// Find user by email
 	async findByEmail(email) {
 		try {
-			const { data, error } = await supabaseAdmin
+			const { data, error } = await this.database
 				.from(this.tableName)
 				.select('*')
 				.eq('email', email.toLowerCase())

@@ -4,14 +4,13 @@ export class Repository {
 	constructor(tableName, entityClass) {
 		this.tableName = tableName
 		this.entityClass = entityClass
+		this.database = supabaseAdmin
 	}
 
-	// Abstract method - must be implemented by child classes
 	toDatabase(entity) {
 		throw new Error('toDatabase method must be implemented by child class')
 	}
 
-	// Generic save method
 	async save(entity) {
 		try {
 			const entityData = this.toDatabase(entity)
@@ -32,7 +31,6 @@ export class Repository {
 		}
 	}
 
-	// Generic update method
 	async update(entity) {
 		try {
 			if (!entity.id) {
@@ -58,7 +56,6 @@ export class Repository {
 		}
 	}
 
-	// Generic find by ID
 	async findById(id) {
 		try {
 			const { data, error } = await supabaseAdmin
@@ -82,7 +79,6 @@ export class Repository {
 		}
 	}
 
-	// Generic find all
 	async findAll() {
 		try {
 			const { data, error } = await supabaseAdmin
@@ -100,7 +96,6 @@ export class Repository {
 		}
 	}
 
-	// Generic delete
 	async delete(id) {
 		try {
 			const { error } = await supabaseAdmin
