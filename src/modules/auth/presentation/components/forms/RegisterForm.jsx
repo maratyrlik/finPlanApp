@@ -83,7 +83,7 @@ export function RegisterForm({ onSubmit, loading = false }) {
 		const passwordErrors = PasswordService.validateStrength(
 			formData.password
 		)
-		if (passwordErrors) {
+		if (passwordErrors.length) {
 			newErrors.password = passwordErrors[0]
 		}
 

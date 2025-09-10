@@ -13,21 +13,18 @@ export default function RegisterPage() {
 		setMessage('')
 
 		try {
-			console.log('i am here')
+			console.warn('1')
 			const response = await fetch('/api/auth/register', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(formData),
 			})
-			console.log('i am here2', response)
 
 			const data = await response.json()
-			console.log('i am here3', data)
 
 			if (!response.ok) {
 				throw new Error(data.error || 'Registration failed')
 			}
-			console.log('i am here4')
 
 			setMessage(data.message)
 			// Optionally redirect to login or verification page

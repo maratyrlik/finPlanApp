@@ -1,5 +1,5 @@
 // src/infrastructure/repositories/AccountRepository.js
-import { Repository } from './Repository.js'
+import { Repository } from '../../../../shared/infrastructure/repositories/Repository.js'
 import { AccountBalance } from '../../domain/entities/AccountBalance.js'
 
 export class AccountBalanceRepository extends Repository {

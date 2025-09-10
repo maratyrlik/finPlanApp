@@ -11,7 +11,6 @@ export class RegisterUser {
 	}
 
 	validate() {
-		// Use value objects for validation
 		const emailObj = new Email(this.email)
 		const passwordObj = new Password(this.password)
 
@@ -29,7 +28,6 @@ export class RegisterUser {
 		}
 	}
 
-	// Create User entity from command
 	createUser() {
 		return new User({
 			email: this.email.toLowerCase().trim(),

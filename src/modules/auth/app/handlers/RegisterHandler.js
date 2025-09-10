@@ -1,6 +1,8 @@
 import { UserRepository } from '../../infrastructure/repositories/UserRepository.js'
 import { PasswordService } from '../../domain/services/PasswordService.js'
 
+import { LogService } from '../../../log/domain/services/LogService.js'
+
 export class RegisterHandler {
 	constructor() {
 		this.userRepository = new UserRepository()
@@ -40,6 +42,7 @@ export class RegisterHandler {
 				message: 'Registration successful! Welcome to our platform.',
 			}
 		} catch (error) {
+			LogService.error(error.message)
 			throw error
 		}
 	}

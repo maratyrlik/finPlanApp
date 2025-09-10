@@ -1,4 +1,4 @@
-import { Repository } from '../../../../features/accounts/infrastructure/repositories/Repository.js'
+import { Repository } from '../../../../shared/infrastructure/repositories/Repository.js'
 import { User } from '../../domain/entities/User.js'
 
 export class UserRepository extends Repository {

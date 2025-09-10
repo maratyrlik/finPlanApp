@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../../../../shared/lib/supabase.js'
+import { supabaseAdmin } from '../../lib/supabase.js'
 
 export class Repository {
 	constructor(tableName, entityClass) {

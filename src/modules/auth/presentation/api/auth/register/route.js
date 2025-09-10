@@ -1,5 +1,6 @@
 import { RegisterUser } from '../../../../app/commands/RegisterUser.js'
 import { RegisterHandler } from '../../../../app/handlers/RegisterHandler.js'
+import { LogService } from '../../../../../log/domain/services/LogService.js'
 
 export async function POST(request) {
 	try {
