@@ -1,3 +1,3 @@
-import { POST } from '../../../../modules/auth/presentation/api/auth/register/route.js'
+import { POST } from '@/modules/auth/presentation/api/auth/register/route.js'
 
 export { POST }

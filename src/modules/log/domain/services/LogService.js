@@ -1,5 +1,5 @@
 import { Log } from '../entities/Log.js'
-import { LogRepository } from '../../repositories/LogRepository.js'
+import { LogRepository } from '@/log/repositories/LogRepository.js'
 
 export class LogService {
 	static async error(payload) {

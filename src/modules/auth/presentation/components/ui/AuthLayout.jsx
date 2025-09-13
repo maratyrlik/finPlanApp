@@ -1,4 +1,4 @@
-import '../../../styles/auth-basic.css'
+import '@/auth/styles/auth-basic.css'
 
 export function AuthLayout({ children, showBrand = true }) {
 	return (

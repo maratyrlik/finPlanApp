@@ -1,7 +1,8 @@
-import { UserRepository } from '../../infrastructure/repositories/UserRepository.js'
-import { PasswordService } from '../../domain/services/PasswordService.js'
+import { UserRepository } from '@/auth/infrastructure/repositories/UserRepository.js'
+import { PasswordService } from '@/auth/domain/services/PasswordService.js'
 
-import { LogService } from '../../../log/domain/services/LogService.js'
+import { LogService } from '@/log/domain/services/LogService.js'
+import { AuthenticationService } from '@/auth/domain/services/AuthenticationService.js'
 
 export class RegisterHandler {
 	constructor() {
@@ -12,12 +13,12 @@ export class RegisterHandler {
 		try {
 			registerCommand.validate()
 
-			const existingUser = await this.userRepository.findByEmail(
-				registerCommand.email
-			)
-			if (existingUser) {
-				throw new Error('An account with this email already exists')
-			}
+			// const existingUser = await this.userRepository.findByEmail(
+			// 	registerCommand.email
+			// )
+			// if (existingUser) {
+			// 	throw new Error('An account with this email already exists')
+			// }
 
 			const passwordErrors = PasswordService.validateStrength(
 				registerCommand.password
@@ -26,19 +27,24 @@ export class RegisterHandler {
 				throw new Error(passwordErrors[0])
 			}
 
-			const user = registerCommand.createUser()
+			const authService = new AuthenticationService()
 
-			const hashedPassword = await PasswordService.hash(
-				registerCommand.password
-			)
+			const result = await authService.signUp({
+				email: registerCommand.email,
+				password: registerCommand.password,
+				firstName: registerCommand.firstName,
+				lastName: registerCommand.lastName,
+			})
 
-			const savedUser = await this.userRepository.save(user)
-
-			// TODO: Store password hash separately (when you add auth tables)
-			// For now, we'll just return the user without storing password
+			if (result.success) {
+				console.log('User created:', result.user)
+			} else {
+				console.error('Error:', result.error)
+			}
 
 			return {
-				user: savedUser,
+				//	user: savedUser, - můžu si ho najít přes findByEmail - ale potřebuju?
+				user: {},
 				message: 'Registration successful! Welcome to our platform.',
 			}
 		} catch (error) {

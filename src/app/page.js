@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Button from '../shared/components/Button.jsx'
+import Button from '@/shared/components/Button'
 
 export default function Home() {
 	const router = useRouter()

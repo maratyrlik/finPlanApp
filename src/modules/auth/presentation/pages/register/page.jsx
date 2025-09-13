@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { RegisterForm } from '../../components/forms/RegisterForm.jsx'
-import { AuthLayout } from '../../components/ui/AuthLayout.jsx'
+import { RegisterForm } from '@/auth/presentation/components/forms/RegisterForm.jsx'
+import { AuthLayout } from '@/auth/presentation/components/ui/AuthLayout.jsx'
 
 export default function RegisterPage() {
 	const [loading, setLoading] = useState(false)

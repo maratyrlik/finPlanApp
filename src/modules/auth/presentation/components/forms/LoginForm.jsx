@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { AuthInput } from '../ui/AuthInput.jsx'
-import { AuthButton } from '../ui/AuthButton.jsx'
+import { AuthInput } from '@/auth/presentation/components/ui/AuthInput.jsx'
+import { AuthButton } from '@/auth/presentation/components/ui/AuthButton.jsx'
 
 export function LoginForm({ onSubmit, loading = false }) {
 	const [formData, setFormData] = useState({

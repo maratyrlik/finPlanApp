@@ -1,5 +1,5 @@
-import { Repository } from '../../../../shared/infrastructure/repositories/Repository.js'
-import { User } from '../../domain/entities/User.js'
+import { Repository } from '@/shared/infrastructure/repositories/Repository.js'
+import { User } from '@/auth/domain/entities/User.js'
 
 export class UserRepository extends Repository {
 	constructor() {

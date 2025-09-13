@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { AuthInput } from '../ui/AuthInput.jsx'
-import { AuthButton } from '../ui/AuthButton.jsx'
+import { AuthInput } from '@/auth/presentation/components/ui/AuthInput.jsx'
+import { AuthButton } from '@/auth/presentation/components/ui/AuthButton.jsx'
 
-import { PasswordService } from '../../../domain/services/PasswordService.js'
-import { EmailService } from '../../../domain/services/EmailService.js'
+import { PasswordService } from '@/auth/domain/services/PasswordService.js'
+import { EmailService } from '@/auth/domain/services/EmailService.js'
 
 export function RegisterForm({ onSubmit, loading = false }) {
 	const [formData, setFormData] = useState({

@@ -1,5 +1,5 @@
-import { Repository } from '../../../shared/infrastructure/repositories/Repository.js'
-import { Log } from '../domain/entities/Log.js'
+import { Repository } from '@/shared/infrastructure/repositories/Repository.js'
+import { Log } from '@/log/domain/entities/Log.js'
 
 export class LogRepository extends Repository {
 	constructor() {

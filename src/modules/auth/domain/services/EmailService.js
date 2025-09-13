@@ -1,4 +1,4 @@
-import { Email } from '../value-objects/Email.js'
+import { Email } from '@/auth/domain/value-objects/Email.js'
 
 export class EmailService {
 	static isValid(email) {

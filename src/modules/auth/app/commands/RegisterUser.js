@@ -1,6 +1,6 @@
-import { User } from '../../domain/entities/User.js'
-import { Email } from '../../domain/value-objects/Email.js'
-import { Password } from '../../domain/value-objects/Password.js'
+import { User } from '@/auth/domain/entities/User.js'
+import { Email } from '@/auth/domain/value-objects/Email.js'
+import { Password } from '@/auth/domain/value-objects/Password.js'
 
 export class RegisterUser {
 	constructor(email, password, firstName, lastName) {

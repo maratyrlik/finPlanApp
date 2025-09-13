@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { LoginForm } from '../../components/forms/LoginForm.jsx'
-import { AuthLayout } from '../../components/ui/AuthLayout.jsx'
+import { LoginForm } from '@/auth/presentation/components/forms/LoginForm.jsx'
+import { AuthLayout } from '@/auth/presentation/components/ui/AuthLayout.jsx'
 
 export default function LoginPage() {
 	const [loading, setLoading] = useState(false)
