@@ -107,8 +107,8 @@ src/
 -Create User Domain Entity - Build User class similar to your Account entity with validation 
 -User Repository Implementation - Create UserRepository extending your base Repository class
 -Login Command/Handler - Build login use case with email/password validation
-TODO Authentication Service - Create service to handle Supabase auth (signIn, signUp, signOut)
-Session Management - Set up middleware to check authentication state and protect routes
+-Authentication Service - Create service to handle Supabase auth (signIn, signUp, signOut)
+TODOSession Management - Set up middleware to check authentication state and protect routes
 Login API Endpoint - Create /api/auth/login route handler
 Logout API Endpoint - Create /api/auth/logout route handler
 Login Form Component - Build login form in presentation layer
@@ -116,3 +116,6 @@ Protected Route Setup - Create middleware or HOC to protect private pages
 Private Dashboard Page - Create simple /dashboard page that requires authentication
 Redirect Logic - Implement redirects (logged in users → dashboard, unauthorized → login)
 Error Handling - Add proper error handling for auth failures and form validation
+
+
+-přidat todo - vytvořit tabulu user, trigger na plnění user z auth.users (v supabase)

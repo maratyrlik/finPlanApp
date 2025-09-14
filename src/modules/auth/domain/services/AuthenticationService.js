@@ -1,16 +1,12 @@
-import { supabaseAdmin } from '@/shared/lib/supabase.js'
+// src/modules/auth/domain/services/AuthenticationService.js
+import { supabase } from '@/shared/lib/supabase.js' // Changed from supabaseAdmin
 import { PasswordService } from './PasswordService.js'
 import { EmailService } from './EmailService.js'
 
 export class AuthenticationService {
 	/**
 	 * Sign up a new user
-	 * @param {Object} userData - User registration data
-	 * @param {string} userData.email - User email
-	 * @param {string} userData.password - User password
-	 * @param {string} userData.firstName - User first name
-	 * @param {string} userData.lastName - User last name
-	 * @returns {Promise<Object>} Authentication result
+	 * The trigger will automatically create the users table record
 	 */
 	async signUp({ email, password, firstName, lastName }) {
 		try {
@@ -20,7 +16,9 @@ export class AuthenticationService {
 			this.validateName(firstName, 'First name')
 			this.validateName(lastName, 'Last name')
 
-			const { data, error } = await supabaseAdmin.auth.signUp({
+			// Only create auth.users record - trigger handles users table
+			const { data, error } = await supabase.auth.signUp({
+				// Changed to supabase
 				email: email.trim().toLowerCase(),
 				password,
 				options: {
@@ -32,16 +30,41 @@ export class AuthenticationService {
 			})
 
 			if (error) {
-				throw new Error(error.message)
+				console.error('Supabase auth.signUp error:', {
+					message: error.message,
+					status: error.status,
+					details: error.details,
+					hint: error.hint,
+					code: error.code,
+				})
+				throw new Error(`Auth signup failed: ${error.message}`)
+			}
+
+			// Optional: Wait a moment for trigger to complete
+			// and fetch the complete user profile
+			if (data.user) {
+				// Small delay to ensure trigger has completed
+				await new Promise(resolve => setTimeout(resolve, 100))
+
+				// Fetch the complete user profile
+				const userProfile = await this.getUserProfile(data.user.id)
+
+				return {
+					success: true,
+					user: data.user,
+					userProfile: userProfile,
+					session: data.session,
+					message: data.user?.email_confirmed_at
+						? 'Account created successfully'
+						: 'Please check your email to confirm your account',
+				}
 			}
 
 			return {
 				success: true,
 				user: data.user,
 				session: data.session,
-				message: data.user?.email_confirmed_at
-					? 'Account created successfully'
-					: 'Please check your email to confirm your account',
+				message: 'Account created successfully',
 			}
 		} catch (error) {
 			return {
@@ -54,11 +77,31 @@ export class AuthenticationService {
 	}
 
 	/**
+	 * Get user profile from users table
+	 */
+	async getUserProfile(userId) {
+		try {
+			const { data, error } = await supabase // Changed to supabase
+				.from('users')
+				.select('*')
+				.eq('id', userId)
+				.single()
+
+			if (error) {
+				console.error('Error fetching user profile:', error)
+				return null
+			}
+
+			return data
+		} catch (error) {
+			console.error('Error in getUserProfile:', error)
+			return null
+		}
+	}
+
+	/**
 	 * Sign in an existing user
-	 * @param {Object} credentials - Login credentials
-	 * @param {string} credentials.email - User email
-	 * @param {string} credentials.password - User password
-	 * @returns {Promise<Object>} Authentication result
+	 * Also fetch their profile data
 	 */
 	async signIn({ email, password }) {
 		try {
@@ -68,20 +111,25 @@ export class AuthenticationService {
 				throw new Error('Password is required')
 			}
 
-			const { data, error } = await supabaseAdmin.auth.signInWithPassword(
-				{
-					email: email.trim().toLowerCase(),
-					password,
-				}
-			)
+			const { data, error } = await supabase.auth.signInWithPassword({
+				// Changed to supabase
+				email: email.trim().toLowerCase(),
+				password,
+			})
 
 			if (error) {
 				throw new Error(error.message)
 			}
 
+			// Fetch user profile
+			const userProfile = data.user
+				? await this.getUserProfile(data.user.id)
+				: null
+
 			return {
 				success: true,
 				user: data.user,
+				userProfile: userProfile,
 				session: data.session,
 				message: 'Signed in successfully',
 			}
@@ -95,13 +143,9 @@ export class AuthenticationService {
 		}
 	}
 
-	/**
-	 * Sign out the current user
-	 * @returns {Promise<Object>} Sign out result
-	 */
 	async signOut() {
 		try {
-			const { error } = await supabaseAdmin.auth.signOut()
+			const { error } = await supabase.auth.signOut() // Changed to supabase
 
 			if (error) {
 				throw new Error(error.message)
@@ -119,16 +163,12 @@ export class AuthenticationService {
 		}
 	}
 
-	/**
-	 * Get current session
-	 * @returns {Promise<Object>} Current session data
-	 */
 	async getCurrentSession() {
 		try {
 			const {
 				data: { session },
 				error,
-			} = await supabaseAdmin.auth.getSession()
+			} = await supabase.auth.getSession() // Changed to supabase
 
 			if (error) {
 				throw new Error(error.message)
@@ -151,24 +191,24 @@ export class AuthenticationService {
 		}
 	}
 
-	/**
-	 * Get current user
-	 * @returns {Promise<Object>} Current user data
-	 */
 	async getCurrentUser() {
 		try {
 			const {
 				data: { user },
 				error,
-			} = await supabaseAdmin.auth.getUser()
+			} = await supabase.auth.getUser() // Changed to supabase
 
 			if (error) {
 				throw new Error(error.message)
 			}
 
+			// Also fetch profile if user exists
+			const userProfile = user ? await this.getUserProfile(user.id) : null
+
 			return {
 				success: true,
 				user,
+				userProfile,
 				isAuthenticated: !!user,
 			}
 		} catch (error) {
@@ -176,96 +216,8 @@ export class AuthenticationService {
 				success: false,
 				error: error.message,
 				user: null,
+				userProfile: null,
 				isAuthenticated: false,
-			}
-		}
-	}
-
-	/**
-	 * Refresh the current session
-	 * @returns {Promise<Object>} Refreshed session data
-	 */
-	async refreshSession() {
-		try {
-			const { data, error } = await supabaseAdmin.auth.refreshSession()
-
-			if (error) {
-				throw new Error(error.message)
-			}
-
-			return {
-				success: true,
-				session: data.session,
-				user: data.user,
-			}
-		} catch (error) {
-			return {
-				success: false,
-				error: error.message,
-				session: null,
-				user: null,
-			}
-		}
-	}
-
-	/**
-	 * Send password reset email
-	 * @param {string} email - User email
-	 * @returns {Promise<Object>} Reset password result
-	 */
-	async resetPassword(email) {
-		try {
-			this.validateEmail(email)
-
-			const { error } = await supabaseAdmin.auth.resetPasswordForEmail(
-				email.trim().toLowerCase(),
-				{
-					redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
-				}
-			)
-
-			if (error) {
-				throw new Error(error.message)
-			}
-
-			return {
-				success: true,
-				message: 'Password reset email sent',
-			}
-		} catch (error) {
-			return {
-				success: false,
-				error: error.message,
-			}
-		}
-	}
-
-	/**
-	 * Update user password
-	 * @param {string} newPassword - New password
-	 * @returns {Promise<Object>} Update password result
-	 */
-	async updatePassword(newPassword) {
-		try {
-			this.validatePassword(newPassword)
-
-			const { data, error } = await supabaseAdmin.auth.updateUser({
-				password: newPassword,
-			})
-
-			if (error) {
-				throw new Error(error.message)
-			}
-
-			return {
-				success: true,
-				user: data.user,
-				message: 'Password updated successfully',
-			}
-		} catch (error) {
-			return {
-				success: false,
-				error: error.message,
 			}
 		}
 	}
@@ -276,7 +228,8 @@ export class AuthenticationService {
 			throw new Error('Email is required')
 		}
 
-		if (EmailService.isValid()) {
+		if (!EmailService.isValid(email)) {
+			// Fixed: added email parameter
 			throw new Error('Please enter a valid email address')
 		}
 	}
