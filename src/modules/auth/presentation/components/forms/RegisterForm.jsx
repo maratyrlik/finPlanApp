@@ -7,11 +7,11 @@ import { EmailService } from '@/auth/domain/services/EmailService.js'
 
 export function RegisterForm({ onSubmit, loading = false }) {
 	const [formData, setFormData] = useState({
-		firstName: 'm',
-		lastName: 't',
-		email: 'm@t.cz',
-		password: 'MmmmmmCssssss2022',
-		confirmPassword: 'MmmmmmCssssss2022',
+		firstName: 'mara',
+		lastName: 'seznam',
+		email: 'tyrlik.marek@seznam.cz',
+		password: 'hyjqad-rexpix-3pogCi',
+		confirmPassword: 'hyjqad-rexpix-3pogCi',
 	})
 
 	const [errors, setErrors] = useState({})
