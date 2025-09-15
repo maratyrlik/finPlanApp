@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/shared/lib/supabase'
+import { supabaseClient } from '@/shared/lib/supabase'
 
 import { AccountBalanceRepository } from '@/features/accounts/infrastructure/repositories/AccountBalanceRepository.js'
 import { AccountBalance } from '@/features/accounts/domain/entities/AccountBalance.js'
@@ -11,7 +11,7 @@ export async function POST(request) {
 		// console.log('Saving to Log table:', body)
 
 		// // Ulož do tabulky "Log"
-		// const { data, error } = await supabaseAdmin
+		// const { data, error } = await supabaseClient
 		// 	.from('Log')
 		// 	.insert([body])
 		// 	.select()

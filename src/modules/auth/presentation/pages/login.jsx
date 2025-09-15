@@ -25,7 +25,7 @@ export default function LoginPage() {
 			})
 
 			if (result.success) {
-				console.log('Login successful:', result.user)
+				console.log('Login successful:', result)
 				setMessage('Login successful! Redirecting...')
 
 				// Get redirect URL from query params or default to dashboard

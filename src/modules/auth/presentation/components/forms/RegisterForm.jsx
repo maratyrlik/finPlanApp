@@ -208,7 +208,7 @@ export function RegisterForm({ onSubmit, loading = false }) {
 			<div className="auth-form__footer">
 				<p className="auth-form__text">
 					Already have an account?{' '}
-					<a href="/auth/login" className="auth-form__link">
+					<a href="/login" className="auth-form__link">
 						Sign in
 					</a>
 				</p>

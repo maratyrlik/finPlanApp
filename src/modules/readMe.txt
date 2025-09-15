@@ -108,14 +108,35 @@ src/
 -User Repository Implementation - Create UserRepository extending your base Repository class
 -Login Command/Handler - Build login use case with email/password validation
 -Authentication Service - Create service to handle Supabase auth (signIn, signUp, signOut)
-TODOSession Management - Set up middleware to check authentication state and protect routes
+TODO Session Management - Set up middleware to check authentication state and protect routes
+ ---přidal jsem middleware, když jsem neautorizovaný tak se nedostanu na /dashboard - přesměruje me to na login 
 Login API Endpoint - Create /api/auth/login route handler
 Logout API Endpoint - Create /api/auth/logout route handler
 Login Form Component - Build login form in presentation layer
-Protected Route Setup - Create middleware or HOC to protect private pages
-Private Dashboard Page - Create simple /dashboard page that requires authentication
+- Protected Route Setup - Create middleware or HOC to protect private pages
+- Private Dashboard Page - Create simple /dashboard page that requires authentication
 Redirect Logic - Implement redirects (logged in users → dashboard, unauthorized → login)
 Error Handling - Add proper error handling for auth failures and form validation
 
 
--přidat todo - vytvořit tabulu user, trigger na plnění user z auth.users (v supabase)
+mám sign up 
+mám Login
+jeste logout, refresh password a upravit anvigaci
+přidat hook na curent user? nebo až to budu potřebovat?
+
+
+vytovřit nový next project, nové repository , 
+
+?jak sdílet autorizaci a logger a další kompoennty?
+
+
+??? how to handle who can see what? (page level)
+
+
+tyrlik.marek@seznam.cz
+hyjqad-rexpix-3pogCi
+
+
+
+
+? what is difference between js an jsx files and when to user which ones?

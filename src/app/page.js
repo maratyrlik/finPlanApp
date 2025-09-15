@@ -6,6 +6,10 @@ import Button from '@/shared/components/Button'
 export default function Home() {
 	const router = useRouter()
 
+	const goToDashboard = () => {
+		router.push('/dashboard')
+	}
+
 	const goToLogin = () => {
 		router.push('/login')
 	}
@@ -44,6 +48,9 @@ export default function Home() {
 			<br />
 			<br />
 			<Button onClick={goToLogin}>Login</Button>
+			<br />
+			<br />
+			<Button onClick={goToDashboard}>Dashboard</Button>
 		</div>
 	)
 }

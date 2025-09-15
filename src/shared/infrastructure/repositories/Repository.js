@@ -1,10 +1,10 @@
-import { supabaseAdmin } from '@/shared/lib/supabase.js'
+import { supabaseClient } from '@/shared/lib/supabase.js'
 
 export class Repository {
 	constructor(tableName, entityClass) {
 		this.tableName = tableName
 		this.entityClass = entityClass
-		this.database = supabaseAdmin
+		this.database = supabaseClient
 	}
 
 	toDatabase(entity) {
@@ -15,7 +15,7 @@ export class Repository {
 		try {
 			const entityData = this.toDatabase(entity)
 
-			const { data, error } = await supabaseAdmin
+			const { data, error } = await supabaseClient
 				.from(this.tableName)
 				.insert(entityData)
 				.select()
@@ -39,7 +39,7 @@ export class Repository {
 
 			const entityData = this.toDatabase(entity)
 
-			const { data, error } = await supabaseAdmin
+			const { data, error } = await supabaseClient
 				.from(this.tableName)
 				.update(entityData)
 				.eq('id', entity.id)
@@ -58,7 +58,7 @@ export class Repository {
 
 	async findById(id) {
 		try {
-			const { data, error } = await supabaseAdmin
+			const { data, error } = await supabaseClient
 				.from(this.tableName)
 				.select('*')
 				.eq('id', id)
@@ -81,7 +81,7 @@ export class Repository {
 
 	async findAll() {
 		try {
-			const { data, error } = await supabaseAdmin
+			const { data, error } = await supabaseClient
 				.from(this.tableName)
 				.select('*')
 				.order('created_at', { ascending: false })
@@ -98,7 +98,7 @@ export class Repository {
 
 	async delete(id) {
 		try {
-			const { error } = await supabaseAdmin
+			const { error } = await supabaseClient
 				.from(this.tableName)
 				.delete()
 				.eq('id', id)

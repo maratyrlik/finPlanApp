@@ -73,7 +73,7 @@ export async function middleware(req) {
 
 		// 1. Protected route + not authenticated → redirect to login
 		if (isProtectedRoute && !isAuthenticated) {
-			const loginUrl = new URL('/login', req.url)
+			const loginUrl = new URL('login', req.url)
 			loginUrl.searchParams.set('redirectTo', pathname)
 
 			return NextResponse.redirect(loginUrl)

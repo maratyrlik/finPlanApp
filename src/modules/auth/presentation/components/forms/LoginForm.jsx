@@ -4,8 +4,8 @@ import { AuthButton } from '@/auth/presentation/components/ui/AuthButton.jsx'
 
 export function LoginForm({ onSubmit, loading = false }) {
 	const [formData, setFormData] = useState({
-		email: '@',
-		password: '',
+		email: 'tyrlik.marek@seznam.cz',
+		password: 'hyjqad-rexpix-3pogCi',
 	})
 
 	const [errors, setErrors] = useState({})

@@ -1,5 +1,5 @@
 // src/modules/auth/domain/services/AuthenticationService.js
-import { supabase } from '@/shared/lib/supabase.js' // Changed from supabaseAdmin
+import { supabaseClient } from '@/shared/lib/supabase.js'
 import { PasswordService } from './PasswordService.js'
 import { EmailService } from './EmailService.js'
 
@@ -17,7 +17,7 @@ export class AuthenticationService {
 			this.validateName(lastName, 'Last name')
 
 			// Only create auth.users record - trigger handles users table
-			const { data, error } = await supabase.auth.signUp({
+			const { data, error } = await supabaseClient.auth.signUp({
 				// Changed to supabase
 				email: email.trim().toLowerCase(),
 				password,
@@ -46,13 +46,9 @@ export class AuthenticationService {
 				// Small delay to ensure trigger has completed
 				await new Promise(resolve => setTimeout(resolve, 100))
 
-				// Fetch the complete user profile
-				const userProfile = await this.getUserProfile(data.user.id)
-
 				return {
 					success: true,
 					user: data.user,
-					userProfile: userProfile,
 					session: data.session,
 					message: data.user?.email_confirmed_at
 						? 'Account created successfully'
@@ -77,29 +73,6 @@ export class AuthenticationService {
 	}
 
 	/**
-	 * Get user profile from users table
-	 */
-	async getUserProfile(userId) {
-		try {
-			const { data, error } = await supabase // Changed to supabase
-				.from('users')
-				.select('*')
-				.eq('id', userId)
-				.single()
-
-			if (error) {
-				console.error('Error fetching user profile:', error)
-				return null
-			}
-
-			return data
-		} catch (error) {
-			console.error('Error in getUserProfile:', error)
-			return null
-		}
-	}
-
-	/**
 	 * Sign in an existing user
 	 * Also fetch their profile data
 	 */
@@ -111,25 +84,20 @@ export class AuthenticationService {
 				throw new Error('Password is required')
 			}
 
-			const { data, error } = await supabase.auth.signInWithPassword({
-				// Changed to supabase
-				email: email.trim().toLowerCase(),
-				password,
-			})
+			const { data, error } =
+				await supabaseClient.auth.signInWithPassword({
+					// Changed to supabase
+					email: email.trim().toLowerCase(),
+					password,
+				})
 
 			if (error) {
 				throw new Error(error.message)
 			}
 
-			// Fetch user profile
-			const userProfile = data.user
-				? await this.getUserProfile(data.user.id)
-				: null
-
 			return {
 				success: true,
 				user: data.user,
-				userProfile: userProfile,
 				session: data.session,
 				message: 'Signed in successfully',
 			}
@@ -145,7 +113,7 @@ export class AuthenticationService {
 
 	async signOut() {
 		try {
-			const { error } = await supabase.auth.signOut() // Changed to supabase
+			const { error } = await supabaseClient.auth.signOut()
 
 			if (error) {
 				throw new Error(error.message)
@@ -168,7 +136,7 @@ export class AuthenticationService {
 			const {
 				data: { session },
 				error,
-			} = await supabase.auth.getSession() // Changed to supabase
+			} = await supabaseClient.auth.getSession()
 
 			if (error) {
 				throw new Error(error.message)
@@ -196,19 +164,15 @@ export class AuthenticationService {
 			const {
 				data: { user },
 				error,
-			} = await supabase.auth.getUser() // Changed to supabase
+			} = await supabaseClient.auth.getUser()
 
 			if (error) {
 				throw new Error(error.message)
 			}
 
-			// Also fetch profile if user exists
-			const userProfile = user ? await this.getUserProfile(user.id) : null
-
 			return {
 				success: true,
 				user,
-				userProfile,
 				isAuthenticated: !!user,
 			}
 		} catch (error) {
