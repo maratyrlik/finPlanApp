@@ -5,7 +5,7 @@ import LogoutButton from '@/auth/presentation/components/ui/LogoutButton.jsx'
 export default function Dashboard() {
 	return (
 		<div>
-			Dashboard page
+			This is temp dashboard page
 			<br />
 			<LogoutButton />
 		</div>

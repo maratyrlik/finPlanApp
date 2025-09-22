@@ -1,11 +1,5 @@
-import DashboardHeader from '@/shared/components/DashboardHeader.jsx'
+import Sidebar from '@/shared/components/Sidebar.jsx'
 
 export default function DashboardLayout({ children }) {
-	return (
-		<div className="min-h-screen bg-gray-50">
-			<DashboardHeader />
-
-			<main className="pt-16">{children}</main>
-		</div>
-	)
+	return <Sidebar>{children}</Sidebar>
 }
