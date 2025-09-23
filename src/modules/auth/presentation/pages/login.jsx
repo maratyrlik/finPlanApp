@@ -1,13 +1,12 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-//import { LoginForm } from '@/auth/presentation/components/forms/LoginForm.jsx' //original
 import { LoginForm } from '@/components/login-form'
 
-import { AuthLayout } from '@/auth/presentation/components/ui/AuthLayout.jsx'
 import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.js'
 
 export default function LoginPage() {
+	//TODO - loading
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState('')
 	const router = useRouter()
@@ -52,20 +51,6 @@ export default function LoginPage() {
 		}
 	}
 
-	// return (
-	// 	<AuthLayout>
-	// 		{message && (
-	// 			<div
-	// 				className={`auth-form__${
-	// 					message.includes('successful') ? 'success' : 'error'
-	// 				} auth-mb-4`}
-	// 			>
-	// 				{message}
-	// 			</div>
-	// 		)}
-	// 		<LoginForm onSubmit={handleLogin} loading={loading} />
-	// 	</AuthLayout>
-	// )
 	return (
 		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
 			<div className="w-full max-w-sm">

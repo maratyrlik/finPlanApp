@@ -54,7 +54,6 @@ export async function middleware(req) {
 
 		const authRoutes = [
 			'/login',
-			'/register',
 			'/signup',
 			'/forgot-password',
 			'/reset-password',

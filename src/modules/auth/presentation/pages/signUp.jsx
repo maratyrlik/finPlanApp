@@ -3,9 +3,8 @@
 import { useState } from 'react'
 import { SignUpForm } from '@/components/sign-up-form.jsx'
 
-import { AuthLayout } from '@/auth/presentation/components/ui/AuthLayout.jsx'
-
 export default function SignUpPage() {
+	//TODO - loading
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState('')
 
