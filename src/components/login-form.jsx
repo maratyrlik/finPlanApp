@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export function LoginForm({ className, ...props }) {
+export function LoginForm({ className, loading = false, ...props }) {
 	const [formData, setFormData] = useState({
 		email: 'tyrlik.marek@seznam.cz',
 		password: 'hyjqad-rexpix-3pogCi',
@@ -114,6 +114,7 @@ export function LoginForm({ className, ...props }) {
 									type="submit"
 									className="w-full"
 									onClick={handleSubmit}
+									loading={loading}
 								>
 									Login
 								</Button>

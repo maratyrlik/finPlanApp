@@ -130,3 +130,26 @@
 		0 10px 25px -5px rgba(0, 0, 0, 0.1),
 		0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
+
+.button--loading {
+	position: relative;
+	color: transparent;
+}
+
+.button--loading::after {
+	content: '';
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border: 2px solid transparent;
+	border-top: 2px solid currentColor;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+	color: white;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

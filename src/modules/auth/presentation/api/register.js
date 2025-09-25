@@ -4,6 +4,7 @@ import { LogService } from '@/log/domain/services/LogService.js'
 
 export async function POST(request) {
 	try {
+		console.warn('REGISTER')
 		// Parse request body
 		const body = await request.json()
 		const { email, password, firstName, lastName } = body

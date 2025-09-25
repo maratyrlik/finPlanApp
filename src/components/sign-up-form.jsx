@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { PasswordService } from '@/auth/domain/services/PasswordService.js'
 import { EmailService } from '@/auth/domain/services/EmailService.js'
 
-export function SignUpForm({ className, ...props }) {
+export function SignUpForm({ className, loading = false, ...props }) {
 	const [formData, setFormData] = useState({
 		firstName: 'mara',
 		lastName: 'seznam',
@@ -212,6 +212,7 @@ export function SignUpForm({ className, ...props }) {
 									type="submit"
 									className="w-full"
 									onClick={handleSubmit}
+									loading={loading}
 								>
 									Create Account
 								</Button>

@@ -6,14 +6,12 @@ import { LoginForm } from '@/components/login-form'
 import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.js'
 
 export default function LoginPage() {
-	//TODO - loading
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState('')
 	const router = useRouter()
 	const authService = new AuthenticationService()
 
 	const handleLogin = async formData => {
-		console.warn('logging in  in login.jsx', formData)
 		setLoading(true)
 		setMessage('')
 
@@ -54,7 +52,7 @@ export default function LoginPage() {
 	return (
 		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
 			<div className="w-full max-w-sm">
-				<LoginForm onSubmit={handleLogin} />
+				<LoginForm onSubmit={handleLogin} loading={loading} />
 			</div>
 		</div>
 	)
