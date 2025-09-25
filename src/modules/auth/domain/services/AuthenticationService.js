@@ -1,6 +1,7 @@
 // src/modules/auth/domain/services/AuthenticationService.js
 import { supabaseClient } from '@/shared/lib/supabase.js'
 import { PasswordService } from './PasswordService.js'
+import { User } from '@/auth/domain/entities/User.js'
 import { EmailService } from './EmailService.js'
 
 export class AuthenticationService {
@@ -11,20 +12,23 @@ export class AuthenticationService {
 	async signUp({ email, password, firstName, lastName }) {
 		try {
 			// Validate input
-			this.validateEmail(email)
+			const user = new User({
+				email: email,
+				firstName: firstName,
+				lastName: lastName,
+			})
+
 			this.validatePassword(password)
-			this.validateName(firstName, 'First name')
-			this.validateName(lastName, 'Last name')
 
 			// Only create auth.users record - trigger handles users table
 			const { data, error } = await supabaseClient.auth.signUp({
 				// Changed to supabase
-				email: email.trim().toLowerCase(),
+				email: user.email,
 				password,
 				options: {
 					data: {
-						first_name: firstName.trim(),
-						last_name: lastName.trim(),
+						first_name: user.firstName,
+						last_name: user.lastName,
 					},
 				},
 			})
@@ -201,20 +205,6 @@ export class AuthenticationService {
 		const passwordErrors = PasswordService.validateStrength(password)
 		if (passwordErrors.length) {
 			throw new Error(passwordErrors[0])
-		}
-	}
-
-	validateName(name, fieldName) {
-		if (!name || name.trim().length === 0) {
-			throw new Error(`${fieldName} is required`)
-		}
-
-		if (name.trim().length < 2) {
-			throw new Error(`${fieldName} must be at least 2 characters long`)
-		}
-
-		if (name.trim().length > 50) {
-			throw new Error(`${fieldName} must be 50 characters or less`)
 		}
 	}
 }
