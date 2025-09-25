@@ -6,16 +6,16 @@ export class UserRepository extends Repository {
 		super('User', User)
 	}
 
-	// Convert User entity to database format
-	toDatabase(user) {
-		return {
-			email: user.email,
-			first_name: user.firstName,
-			last_name: user.lastName,
-			email_verified: user.emailVerified,
-			password_hash: 'test', // Don't include password - that should be handled by auth system
-		}
-	}
+	//
+	// toDatabase(user) {
+	// 	return {
+	// 		email: user.email,
+	// 		first_name: user.firstName,
+	// 		last_name: user.lastName,
+	// 		email_verified: user.emailVerified,
+	// 		password_hash: 'test', // Don't include password - that should be handled by auth system
+	// 	}
+	// }
 
 	// Find user by email
 	async findByEmail(email) {

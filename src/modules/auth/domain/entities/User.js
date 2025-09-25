@@ -1,23 +1,21 @@
-// src/modules/auth/domain/entities/User.js
+import { Name } from '../value-objects/Name.js'
+import { Email } from '../value-objects/Email.js'
+
 export class User {
 	#id
 	#createdAt
 	#updatedAt
-	#email
 	#isEmailVerified
-	#firstName
-	#lastName
+	#name
+	#email
 
 	constructor(props) {
 		this.#id = props.id
-		this.#email = props.email
-		this.#firstName = props.firstName
-		this.#lastName = props.lastName
+		this.#email = new Email(props.email)
+		this.#name = new Name(props.firstName, props.lastName)
 		this.#createdAt = props.createdAt
 		this.#updatedAt = props.updatedAt
 		this.#isEmailVerified = props.isEmailVerified || false
-
-		this.validate()
 	}
 
 	// Getters
@@ -25,16 +23,16 @@ export class User {
 		return this.#id
 	}
 	get email() {
-		return this.#email
+		return this.#email?.toString()
 	}
 	get firstName() {
-		return this.#firstName
+		return this.#name?.firstName
 	}
 	get lastName() {
-		return this.#lastName
+		return this.#name?.lastName
 	}
 	get fullName() {
-		return `${this.#firstName} ${this.#lastName}`.trim()
+		return this.#name?.fullName
 	}
 	get createdAt() {
 		return this.#createdAt
@@ -48,13 +46,11 @@ export class User {
 
 	// Setters
 	set firstName(value) {
-		this.#firstName = value?.trim()
-		this.validateName(this.#firstName, 'First name')
+		this.#name?.firstName(value)
 	}
 
 	set lastName(value) {
-		this.#lastName = value?.trim()
-		this.validateName(this.#lastName, 'Last name')
+		this.#name?.lastName(value)
 	}
 
 	static fromDatabase(data) {
@@ -72,35 +68,11 @@ export class User {
 	toJSON() {
 		return {
 			id: this.#id,
-			email: this.#email,
-			firstName: this.#firstName,
-			lastName: this.#lastName,
-			fullName: this.fullName,
+			email: this.#email?.toJSON(),
+			name: this.#name?.toJSON(),
 			createdAt: this.#createdAt,
 			updatedAt: this.#updatedAt,
 			isEmailVerified: this.#isEmailVerified,
-		}
-	}
-
-	validate() {
-		this.validateEmail() // mohu validovat spíš přes src/modules/auth/domain/value-objects/Email.js
-		this.validateName(this.#firstName, 'First name')
-		this.validateName(this.#lastName, 'Last name')
-	}
-
-	validateEmail() {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-		if (!this.#email || !emailRegex.test(this.#email)) {
-			throw new Error('Valid email is required')
-		}
-	}
-
-	validateName(name, fieldName) {
-		if (!name || name.trim().length === 0) {
-			throw new Error(`${fieldName} is required`)
-		}
-		if (name.length > 50) {
-			throw new Error(`${fieldName} must be 50 characters or less`)
 		}
 	}
 }

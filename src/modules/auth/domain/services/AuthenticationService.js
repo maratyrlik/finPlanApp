@@ -193,7 +193,6 @@ export class AuthenticationService {
 		}
 
 		if (!EmailService.isValid(email)) {
-			// Fixed: added email parameter
 			throw new Error('Please enter a valid email address')
 		}
 	}

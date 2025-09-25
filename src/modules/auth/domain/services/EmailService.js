@@ -9,4 +9,8 @@ export class EmailService {
 			return false
 		}
 	}
+
+	static validate(email) {
+		new Email(email)
+	}
 }
