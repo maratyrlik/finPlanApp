@@ -8,42 +8,37 @@ import Link from 'next/link'
 
 export default function Home() {
 	const router = useRouter()
-
-	const goToDashboard = () => {
-		router.push('/dashboard')
-	}
-
-	const goToLogin = () => {
-		router.push('/login')
-	}
-
-	const handleClick = async () => {
+	const log = async () => {
 		try {
-			// const response = await fetch('/api/message', {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// 	body: JSON.stringify({
-			// 		message: 'Hello from the frontend!',
-			// 	}),
-			// })
-			// const data = await response.json()
-			// if (data.success) {
-			// 	console.warn('sucess:', data)
-			// 	log('Hello')
-			// 	alert('Message sent successfully!')
-			// } else {
-			// 	alert('Failed to send message')
-			// }
+			const response = await fetch('/api/logs', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify('Hello from the frontend!'),
+			})
+
+			const data = await response.json()
+
+			if (data.success) {
+				alert('Log sent successfully!')
+			} else {
+				alert('Failed to send message')
+			}
 		} catch (error) {
-			console.error('Error:', error)
 			alert('Error sending message')
 		}
 	}
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
+			<Button
+				size="lg"
+				className="w-full sm:w-auto min-w-32"
+				onClick={log}
+			>
+				Test button
+			</Button>
 			{/* Main Content */}
 			<div className="flex-1 flex items-center justify-center px-4">
 				<div className="text-center space-y-8 max-w-2xl">
@@ -81,7 +76,6 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-
 			{/* Footer */}
 			<footer className="py-6 px-4 border-t bg-card/50">
 				<div className="text-center">

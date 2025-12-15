@@ -1,5 +1,25 @@
 saving Log to database
 
-import { LogService } from 'src/modules/log/domain/services/LogService.js'
+## from frontend
 
-LogService.error(error.message)
+src/app/api/logs/route.ts
+
+```
+import { LogService } from '@/log/domain/services/LogService.ts'
+...
+const body = await request.json()
+LogService.error(body)
+```
+
+## from backend
+
+```
+import { LogService } from '@/log/domain/services/LogService.ts'
+...
+LogService.error('whatever')
+```
+
+### detail
+
+depends on @/shared
+uses Repository.ts

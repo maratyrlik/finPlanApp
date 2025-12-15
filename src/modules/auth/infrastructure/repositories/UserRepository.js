@@ -1,22 +1,4 @@
-import { Repository } from '@/shared/infrastructure/repositories/Repository.js'
-import { User } from '@/auth/domain/entities/User.js'
-
-export class UserRepository extends Repository {
-	constructor() {
-		super('User', User)
-	}
-
-	//
-	// toDatabase(user) {
-	// 	return {
-	// 		email: user.email,
-	// 		first_name: user.firstName,
-	// 		last_name: user.lastName,
-	// 		email_verified: user.emailVerified,
-	// 		password_hash: 'test', // Don't include password - that should be handled by auth system
-	// 	}
-	// }
-
+export class UserRepository {
 	// Find user by email
 	async findByEmail(email) {
 		try {
