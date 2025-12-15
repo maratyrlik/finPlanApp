@@ -1,139 +1,176 @@
-// src/domain/entities/AccountBalance.js
-export class AccountBalance {
-	#id
-	#createdAt
-	#updatedAt
-	#accountId
-	#toDate
-	#amount
+import { IDatabaseRow } from '@/shared/domain/IDatabaseRow'
 
-	constructor(props) {
-		this.#id = props.id
-		this.#createdAt = props.createdAt
-		this.#updatedAt = props.updatedAt
-		this.#accountId = props.accountId
-		this.#toDate = props.toDate
-		this.#amount = props.amount
+export interface AccountBalanceProps {
+	id?: string
+	createdAt?: Date
+	updatedAt?: Date
+	accountId: number
+	toDate: Date
+	amount: number
+}
+
+export interface AccountBalanceDatabaseRow {
+	id?: string
+	created_at?: string | Date
+	updated_at?: string | Date
+	account_id: number
+	to_date: string | Date
+	amount: number
+}
+
+export class AccountBalance
+	implements IDatabaseRow<AccountBalance, AccountBalanceDatabaseRow>
+{
+	constructor(private readonly props: AccountBalanceProps) {
 		this.validate()
 	}
 
-	// Getters
-	get id() {
-		return this.#id
+	// ===== GETTERS =====
+	get id(): string | undefined {
+		return this.props.id
 	}
 
-	get accountId() {
-		return this.#accountId
+	get createdAt(): Date | undefined {
+		return this.props.createdAt
 	}
 
-	set accountId(value) {
-		if (this.#id) {
+	get updatedAt(): Date | undefined {
+		return this.props.updatedAt
+	}
+
+	get accountId(): number {
+		return this.props.accountId
+	}
+
+	get toDate(): Date {
+		return this.props.toDate
+	}
+
+	get amount(): number {
+		return this.props.amount
+	}
+
+	// ===== SETTERS =====
+	set accountId(value: number) {
+		if (this.props.id) {
 			throw new Error(
 				'Cannot change account ID of existing balance record'
 			)
 		}
-		this.#accountId = value
+
+		this.props.accountId = value
 		this.validateAccountId()
 	}
 
-	get toDate() {
-		return this.#toDate
-	}
-
-	set toDate(value) {
-		this.#toDate = value
+	set toDate(value: Date) {
+		this.props.toDate = value
 		this.validateToDate()
 	}
 
-	get amount() {
-		return this.#amount
-	}
-
-	set amount(value) {
-		this.#amount = value
+	set amount(value: number) {
+		this.props.amount = value
 		this.validateAmount()
 	}
 
-	get createdAt() {
-		return this.#createdAt
+	// ===== DATABASE METHODS =====
+	getDatabaseTableName(): string {
+		return 'AccountBalance'
 	}
 
-	get updatedAt() {
-		return this.#updatedAt
-	}
+	fromDatabase(row: AccountBalanceDatabaseRow): AccountBalance {
+		const createdAt =
+			typeof row.created_at === 'string'
+				? new Date(row.created_at)
+				: row.created_at
 
-	// Factory methods
-	static create(accountId, amount = 0, toDate = new Date()) {
+		const updatedAt =
+			typeof row.updated_at === 'string'
+				? new Date(row.updated_at)
+				: row.updated_at
+
+		const toDate =
+			typeof row.to_date === 'string'
+				? new Date(row.to_date)
+				: row.to_date
+
 		return new AccountBalance({
-			accountId: accountId,
-			toDate: toDate,
-			amount: amount,
+			id: row.id,
+			createdAt,
+			updatedAt,
+			accountId: row.account_id,
+			toDate,
+			amount: row.amount,
 		})
 	}
 
-	static fromDatabase(data) {
-		return new AccountBalance({
-			id: data.id,
-			createdAt: data.created_at,
-			updatedAt: data.updated_at,
-			accountId: data.account_id,
-			toDate: data.to_date,
-			amount: data.amount,
-		})
+	toDatabase(): AccountBalanceDatabaseRow {
+		return {
+			id: this.id,
+			created_at: this.createdAt,
+			updated_at: this.updatedAt,
+			account_id: this.accountId,
+			to_date: this.toDate,
+			amount: this.amount,
+		}
 	}
 
-	// Util
+	// ===== UTIL =====
 	toJSON() {
 		return {
-			id: this.#id,
-			createdAt: this.#createdAt,
-			updatedAt: this.#updatedAt,
-			accountId: this.#accountId,
-			toDate: this.#toDate,
-			amount: this.#amount,
+			id: this.id,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+			accountId: this.accountId,
+			toDate: this.toDate,
+			amount: this.amount,
 		}
 	}
 
-	toString() {
-		return `AccountBalance(id: ${this.#id}, accountId: ${this.#accountId}, amount: ${this.#amount})`
+	toString(): string {
+		return `AccountBalance(id: ${this.id}, accountId: ${this.accountId}, amount: ${this.amount})`
 	}
 
-	// Business logic methods
-	validate() {
+	// ===== BUSINESS LOGIC =====
+	private validate(): void {
 		this.validateAccountId()
 		this.validateToDate()
 		this.validateAmount()
 	}
 
-	validateAccountId() {
-		if (!this.#accountId) {
+	private validateAccountId(): void {
+		if (!this.props.accountId) {
 			throw new Error('Account ID is required')
 		}
-		if (typeof this.#accountId !== 'number') {
+
+		if (typeof this.props.accountId !== 'number') {
 			throw new Error('Account ID must be a number')
 		}
 	}
 
-	validateToDate() {
-		if (!this.#toDate) {
+	private validateToDate(): void {
+		if (!this.props.toDate) {
 			throw new Error('To date is required')
 		}
-		if (!(this.#toDate instanceof Date)) {
-			//throw new Error('To date must be a valid Date object')
+
+		if (!(this.props.toDate instanceof Date)) {
+			throw new Error('To date must be a valid Date')
 		}
-		if (this.#toDate > new Date()) {
+
+		if (this.props.toDate > new Date()) {
 			throw new Error('To date cannot be in the future')
 		}
 	}
 
-	validateAmount() {
-		if (this.#amount === null || this.#amount === undefined) {
+	private validateAmount(): void {
+		if (this.props.amount === null || this.props.amount === undefined) {
 			throw new Error('Amount is required')
 		}
-		if (typeof this.#amount !== 'number') {
+
+		if (typeof this.props.amount !== 'number') {
 			throw new Error('Amount must be a number')
 		}
-		if (!isFinite(this.#amount)) {
+
+		if (!Number.isFinite(this.props.amount)) {
 			throw new Error('Amount must be a finite number')
 		}
 	}
