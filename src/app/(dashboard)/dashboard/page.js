@@ -1,6 +1,6 @@
 'use client'
 
-import LogoutButton from '@/auth/presentation/components/ui/LogoutButton.jsx'
+import LogoutButton from '@/auth/presentation/components/ui/LogoutButton'
 
 export default function Dashboard() {
 	return (

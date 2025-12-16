@@ -2,17 +2,24 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SignUpForm } from '@/components/sign-up-form.jsx'
+import { SignUpForm } from '@/components/sign-up-form'
+import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService'
 
-import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.ts'
+interface SignUpFormData {
+	email: string
+	password: string
+	firstName: string
+	lastName: string
+}
 
 export default function SignUpPage() {
-	const [loading, setLoading] = useState(false)
-	const [message, setMessage] = useState('')
+	const [loading, setLoading] = useState<boolean>(false)
+	const [message, setMessage] = useState<string>('')
+
 	const router = useRouter()
 	const authService = new AuthenticationService()
 
-	const handleRegister = async formData => {
+	const handleRegister = async (formData: SignUpFormData): Promise<void> => {
 		setLoading(true)
 		setMessage('')
 
@@ -28,25 +35,22 @@ export default function SignUpPage() {
 				console.log('SignUp successful:', result)
 				setMessage('SignUp successful! Redirecting...')
 
-				// Get redirect URL from query params or default to dashboard
 				const urlParams = new URLSearchParams(window.location.search)
-				const redirectTo = urlParams.get('redirectTo') || '/dashboard'
+				const redirectTo = urlParams.get('redirectTo') ?? '/dashboard'
 
-				// Small delay to show success message
 				setTimeout(() => {
 					router.push(redirectTo)
-					router.refresh() // Refresh to update middleware state
+					router.refresh()
 				}, 1000)
 
-				//TODO - po sign upu nejsem přihlášený
+				// TODO: user is not logged in after signup
 			} else {
 				console.error('SignUp failed:', result.error)
-				setMessage(result.error || 'SignUp failed')
+				setMessage(result.error ?? 'SignUp failed')
 			}
-		} catch (error) {
-			console.warn('SignUp error')
-			console.dir(error)
-			setMessage(error.message)
+		} catch (error: unknown) {
+			console.warn('SignUp error', error)
+			setMessage(error instanceof Error ? error.message : 'SignUp failed')
 		} finally {
 			setLoading(false)
 		}
@@ -56,6 +60,11 @@ export default function SignUpPage() {
 		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
 			<div className="w-full max-w-sm">
 				<SignUpForm onSubmit={handleRegister} loading={loading} />
+				{message && (
+					<p className="mt-4 text-center text-sm text-muted-foreground">
+						{message}
+					</p>
+				)}
 			</div>
 		</div>
 	)
