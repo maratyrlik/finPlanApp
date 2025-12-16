@@ -1,4 +1,3 @@
-// src/app/api/logs/log/route.ts
 import { NextResponse } from 'next/server'
 import { LogService } from '@/log/domain/services/LogService.ts'
 

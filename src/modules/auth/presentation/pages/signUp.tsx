@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SignUpForm } from '@/components/sign-up-form'
+import { SignupForm } from '@/components/signup-form'
 import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService'
 
-interface SignUpFormData {
+interface SignupFormData {
 	email: string
 	password: string
 	firstName: string
@@ -19,7 +19,8 @@ export default function SignUpPage() {
 	const router = useRouter()
 	const authService = new AuthenticationService()
 
-	const handleRegister = async (formData: SignUpFormData): Promise<void> => {
+	const handleRegister = async (formData: any): Promise<void> => {
+		console.log(formData)
 		setLoading(true)
 		setMessage('')
 
@@ -59,7 +60,7 @@ export default function SignUpPage() {
 	return (
 		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
 			<div className="w-full max-w-sm">
-				<SignUpForm onSubmit={handleRegister} loading={loading} />
+				<SignupForm onSubmit={handleRegister} />
 				{message && (
 					<p className="mt-4 text-center text-sm text-muted-foreground">
 						{message}

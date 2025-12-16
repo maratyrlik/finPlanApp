@@ -1,14 +1,18 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-
+import Link from 'next/link'
 import { Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+
+interface LogResponse {
+	success: boolean
+}
 
 export default function Home() {
 	const router = useRouter()
-	const log = async () => {
+
+	const log = async (): Promise<void> => {
 		try {
 			const response = await fetch('/api/logs', {
 				method: 'POST',
@@ -18,14 +22,15 @@ export default function Home() {
 				body: JSON.stringify('Hello from the frontend!'),
 			})
 
-			const data = await response.json()
+			const data: LogResponse = await response.json()
 
 			if (data.success) {
 				alert('Log sent successfully!')
 			} else {
 				alert('Failed to send message')
 			}
-		} catch (error) {
+		} catch (error: unknown) {
+			console.error('Log error:', error)
 			alert('Error sending message')
 		}
 	}
@@ -39,6 +44,7 @@ export default function Home() {
 			>
 				Test button
 			</Button>
+
 			{/* Main Content */}
 			<div className="flex-1 flex items-center justify-center px-4">
 				<div className="text-center space-y-8 max-w-2xl">
@@ -50,7 +56,7 @@ export default function Home() {
 					</div>
 
 					{/* App Name */}
-					<h1 className="text-6xl md:text-7xl font-bold ">
+					<h1 className="text-6xl md:text-7xl font-bold">
 						Fin Plan App
 					</h1>
 
@@ -64,6 +70,7 @@ export default function Home() {
 								Sign Up
 							</Button>
 						</Link>
+
 						<Link href="/login">
 							<Button
 								variant="outline"
@@ -76,6 +83,7 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
+
 			{/* Footer */}
 			<footer className="py-6 px-4 border-t bg-card/50">
 				<div className="text-center">
