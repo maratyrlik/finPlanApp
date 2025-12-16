@@ -1,33 +1,33 @@
 export class Password {
-	#value
+	private readonly _value: string | undefined
 
-	constructor(value) {
-		this.#value = value
+	constructor(value: string | undefined) {
+		this._value = value
 		this.validate()
 	}
 
 	get value() {
-		return this.#value
+		return this._value
 	}
 
 	validate() {
-		if (!this.#value) {
+		if (!this._value) {
 			throw new Error('Password is required')
 		}
-		if (this.#value.length < 8) {
+		if (this._value.length < 8) {
 			throw new Error('Password must be at least 8 characters long')
 		}
-		if (!/(?=.*[a-z])/.test(this.#value)) {
+		if (!/(?=.*[a-z])/.test(this._value)) {
 			throw new Error(
 				'Password must contain at least one lowercase letter'
 			)
 		}
-		if (!/(?=.*[A-Z])/.test(this.#value)) {
+		if (!/(?=.*[A-Z])/.test(this._value)) {
 			throw new Error(
 				'Password must contain at least one uppercase letter'
 			)
 		}
-		if (!/(?=.*\d)/.test(this.#value)) {
+		if (!/(?=.*\d)/.test(this._value)) {
 			throw new Error('Password must contain at least one number')
 		}
 	}

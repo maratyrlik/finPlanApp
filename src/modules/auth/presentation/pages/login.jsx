@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LoginForm } from '@/components/login-form'
 
-import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.js'
+import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService'
 
 export default function LoginPage() {
 	const [loading, setLoading] = useState(false)

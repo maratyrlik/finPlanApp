@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SignUpForm } from '@/components/sign-up-form.jsx'
 
-import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.js'
+import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService.ts'
 
 export default function SignUpPage() {
 	const [loading, setLoading] = useState(false)

@@ -12,8 +12,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { PasswordService } from '@/auth/domain/services/PasswordService.js'
-import { EmailService } from '@/auth/domain/services/EmailService.js'
+import { PasswordService } from '@/auth/domain/services/PasswordService'
+import { EmailService } from '@/auth/domain/services/EmailService'
 
 export function SignUpForm({ className, loading = false, ...props }) {
 	const [formData, setFormData] = useState({

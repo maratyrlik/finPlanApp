@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { LogoutHandler } from '@/auth/app/handlers/LogoutHandler.js'
+import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService'
 
 export default function LogoutButton({ className = '', children = 'Logout' }) {
 	const [isLoading, setIsLoading] = useState(false)
@@ -8,10 +8,22 @@ export default function LogoutButton({ className = '', children = 'Logout' }) {
 	const logoutHandler = new LogoutHandler()
 
 	const handleLogout = async () => {
+		console.log('logoutButton')
 		try {
 			setIsLoading(true)
 
-			await logoutHandler.handle()
+			//await logoutHandler.handle()
+
+			// const result = await new AuthenticationService().signOut({
+			// 	email: formData.email,
+			// 	password: formData.password,
+			// })
+
+			const { error } = await new AuthenticationService().signOut()
+
+			if (error) {
+				throw new Error(`Logout failed: ${error.message}`)
+			}
 
 			// Redirect to login page or home page after successful logout
 			router.push('/login')
