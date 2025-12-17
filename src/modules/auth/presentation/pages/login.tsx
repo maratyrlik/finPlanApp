@@ -11,7 +11,6 @@ interface LoginFormData {
 }
 
 export default function LoginPage() {
-	console.warn('maraLog -> hello: ')
 	const [loading, setLoading] = useState<boolean>(false)
 	const [message, setMessage] = useState<string>('')
 
@@ -21,23 +20,18 @@ export default function LoginPage() {
 	const handleLogin = async (formData: any): Promise<void> => {
 		setLoading(true)
 		setMessage('')
-
 		try {
 			console.log('Login attempt:', formData)
-
 			const result = await authService.signIn({
 				email: formData.email,
 				password: formData.password,
 			})
 			console.warn('maraLog -> result: ', result)
-
 			if (result.success) {
 				console.log('Login successful:', result)
 				setMessage('Login successful! Redirecting...')
-
 				const urlParams = new URLSearchParams(window.location.search)
 				const redirectTo = urlParams.get('redirectTo') ?? '/dashboard'
-
 				setTimeout(() => {
 					router.push(redirectTo)
 					router.refresh()
