@@ -55,7 +55,7 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
 
 		// ===== ROUTE DEFINITIONS =====
 		const protectedRoutes: string[] = [
-			//'/dashboard',
+			'/dashboard',
 			'/profile',
 			'/accounts',
 			'/settings',
