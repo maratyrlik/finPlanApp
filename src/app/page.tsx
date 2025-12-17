@@ -44,7 +44,6 @@ export default function Home() {
 			>
 				Test button
 			</Button>
-
 			{/* Main Content */}
 			<div className="flex-1 flex items-center justify-center px-4">
 				<div className="text-center space-y-8 max-w-2xl">
@@ -83,7 +82,6 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-
 			{/* Footer */}
 			<footer className="py-6 px-4 border-t bg-card/50">
 				<div className="text-center">

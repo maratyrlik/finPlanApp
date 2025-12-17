@@ -3,6 +3,7 @@ import { LogService } from '@/log/domain/services/LogService.ts'
 
 export async function POST(request: Request): Promise<NextResponse> {
 	try {
+		console.warn('maraLog -> hellllo: ')
 		const body = await request.json()
 		LogService.error(body)
 

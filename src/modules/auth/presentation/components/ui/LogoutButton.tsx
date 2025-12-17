@@ -1,27 +1,34 @@
+'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AuthenticationService } from '@/modules/auth/domain/services/AuthenticationService'
 
-export default function LogoutButton({ className = '', children = 'Logout' }) {
-	const [isLoading, setIsLoading] = useState(false)
+interface LogoutButtonProps {
+	className?: string
+	children?: React.ReactNode
+}
+
+export default function LogoutButton({
+	className = '',
+	children = 'Logout',
+}: LogoutButtonProps) {
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const router = useRouter()
 
-	const handleLogout = async () => {
-		console.log('logoutButton')
+	const handleLogout = async (): Promise<void> => {
 		try {
 			setIsLoading(true)
 
-			const { error } = await new AuthenticationService().signOut()
+			const result = await new AuthenticationService().signOut()
 
-			if (error) {
-				throw new Error(`Logout failed: ${error.message}`)
+			if (!result.success) {
+				throw new Error(result.error ?? 'Logout failed')
 			}
 
-			// Redirect to login page or home page after successful logout
 			router.push('/login')
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error('Logout failed:', error)
-			// You might want to show a toast notification or error message here
 			alert('Failed to logout. Please try again.')
 		} finally {
 			setIsLoading(false)
@@ -30,12 +37,13 @@ export default function LogoutButton({ className = '', children = 'Logout' }) {
 
 	return (
 		<button
+			type="button"
 			onClick={handleLogout}
 			disabled={isLoading}
 			className={`
-				bg-red-500 hover:bg-red-600 
-				text-white font-medium 
-				px-4 py-2 rounded-md 
+				bg-red-500 hover:bg-red-600
+				text-white font-medium
+				px-4 py-2 rounded-md
 				transition-colors duration-200
 				disabled:opacity-50 disabled:cursor-not-allowed
 				${className}
